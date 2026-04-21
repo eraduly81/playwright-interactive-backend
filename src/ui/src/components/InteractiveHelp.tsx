@@ -36,7 +36,7 @@ const samples: CodeSample[] = [
     "id": "ep1",
     "name": "Get Posts",
     "method": "GET",
-    "url": "https://jsonplaceholder.typicode.com/posts/1"
+    "path": "/posts/1"
   }],
   "authFlows": [],
   "assertions": [{
@@ -65,6 +65,17 @@ export function InteractiveHelp() {
   const [executingSample, setExecutingSample] = useState<string | null>(null);
   const [results, setResults] = useState<Record<string, any>>({});
   const [filterText, setFilterText] = useState('');
+  const [editedCode, setEditedCode] = useState<Record<string, string>>({});
+
+  const getCode = (sample: CodeSample) => editedCode[sample.title] ?? sample.code;
+
+  const resetCode = (title: string) => {
+    setEditedCode(prev => {
+      const next = { ...prev };
+      delete next[title];
+      return next;
+    });
+  };
 
   const sections: DocSection[] = [
     {
@@ -146,9 +157,10 @@ export function InteractiveHelp() {
     }
   ];
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedText(text);
+  const copyToClipboard = (sample: CodeSample) => {
+    const code = getCode(sample);
+    navigator.clipboard.writeText(code);
+    setCopiedText(code);
     setTimeout(() => setCopiedText(null), 2000);
   };
 
@@ -165,7 +177,8 @@ export function InteractiveHelp() {
         const data = await res.json();
         setResults(prev => ({ ...prev, [sample.title]: { ok: true, data, status: res.status } }));
       } else if (sample.apiPath === '/api/tests/run') {
-        const body = JSON.parse(sample.code);
+        const code = getCode(sample);
+        const body = JSON.parse(code);
         res = await fetch('http://localhost:3000/api/tests/run', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -248,11 +261,19 @@ export function InteractiveHelp() {
                           </div>
                           <div className="flex gap-2">
                             <button
-                              onClick={() => copyToClipboard(sample.code)}
+                              onClick={() => copyToClipboard(sample)}
                               className="px-3 py-1 bg-white border-2 border-red-600 rounded hover:bg-red-50 text-black text-sm font-medium"
                             >
-                              {copiedText === sample.code ? 'Copied!' : 'Copy'}
+                              {copiedText === getCode(sample) ? 'Copied!' : 'Copy'}
                             </button>
+                            {editedCode[sample.title] && (
+                              <button
+                                onClick={() => resetCode(sample.title)}
+                                className="px-3 py-1 bg-gray-700 border border-gray-500 rounded hover:bg-gray-600 text-white text-sm font-medium"
+                              >
+                                Reset
+                              </button>
+                            )}
                             {sample.executable && (
                               <button
                                 onClick={() => executeSample(sample)}
@@ -266,7 +287,12 @@ export function InteractiveHelp() {
                         </div>
 
                         <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto border border-gray-700">
-                          <pre className="text-sm text-green-400">{sample.code}</pre>
+                          <textarea
+                            value={getCode(sample)}
+                            onChange={(e) => setEditedCode(prev => ({ ...prev, [sample.title]: e.target.value }))}
+                            className="w-full bg-gray-900 text-green-400 font-mono text-sm resize-y min-h-[100px] focus:outline-none"
+                            spellCheck={false}
+                          />
                         </div>
 
                         {results[sample.title] && (
@@ -296,7 +322,7 @@ export function InteractiveHelp() {
       </div>
 
       {copiedText && (
-        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow">
+        <div className="fixed bottom-4 right-4 bg-black border-2 border-red-600 text-red-500 px-4 py-2 rounded-lg shadow-lg font-bold">
           Copied!
         </div>
       )}
