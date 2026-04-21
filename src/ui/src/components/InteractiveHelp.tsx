@@ -26,6 +26,52 @@ const samples: CodeSample[] = [
     apiPath: '/health'
   },
   {
+    title: 'Bearer Token Auth',
+    description: 'Test with Authorization header and JSON body',
+    code: `{
+  "id": "auth-test",
+  "name": "Bearer Token Test",
+  "description": "Testing authenticated POST endpoint with JSON body",
+  "endpoints": [{
+    "id": "ep1",
+    "name": "Create Resource",
+    "method": "POST",
+    "path": "/api/resources",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "Example Resource",
+      "description": "This is a sample payload",
+      "status": "active",
+      "metadata": {
+        "createdBy": "test-user",
+        "version": 1
+      }
+    }
+  }],
+  "authFlows": [],
+  "assertions": [{
+    "id": "a1",
+    "type": "status",
+    "expected": 201,
+    "operator": "equals"
+  }],
+  "environment": {
+    "name": "test",
+    "baseUrl": "https://api.example.com",
+    "variables": {
+      "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    },
+    "timeouts": { "request": 30000, "response": 30000 }
+  },
+  "tags": ["auth", "bearer", "post"]
+}`,
+    language: 'json',
+    executable: false
+  },
+  {
     title: 'Simple Test',
     description: 'Run a basic API test',
     code: `{
