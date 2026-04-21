@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 50%, #991b1b 100%);
+  color: #000000;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Code block styles */
+.code-block {
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  position: relative;
+}
+
+.code-block pre {
+  margin: 0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #d4d4d4;
+}
+
+/* Help section styles - Ferrari Theme */
+.help-section {
+  scroll-margin-top: 80px;
+}
+
+.help-nav-link {
+  transition: all 0.2s ease;
+}
+
+.help-nav-link:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #dc2626;
+}
+
+.help-nav-link.active {
+  background: rgba(0, 0, 0, 0.15);
+  color: #dc2626;
+  border-right: 3px solid #dc2626;
+}
+
+/* Collapsible section */
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.collapsible-content.open {
+  max-height: 10000px;
+  transition: max-height 0.5s ease-in;
+}
+
+/* Example card - Ferrari Theme */
+.example-card {
+  background: #000000;
+  border: 2px solid #dc2626;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: box-shadow 0.2s ease;
+  color: #ffffff;
+}
+
+.example-card:hover {
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+  border-color: #ef4444;
+}
+
+/* Run button animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.run-button-pulse::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.4);
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Toast notification - Ferrari Theme */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #000000;
+  color: #dc2626;
+  border: 2px solid #dc2626;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Table styles - Ferrari Theme */
+.help-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.help-table th,
+.help-table td {
+  border: 1px solid #dc2626;
+  padding: 12px;
+  text-align: left;
+}
+
+.help-table th {
+  background: #000000;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.help-table td {
+  background: #ffffff;
+  color: #000000;
+}
+
+.help-table tr:hover td {
+  background: #fef2f2;
+}
